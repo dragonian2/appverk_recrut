@@ -1,0 +1,76 @@
+
+#cvnavtitle {
+    padding-left:3%;
+}
+
+#cvnavtitle #cvnavtitletxt {
+    font-size: 160%;
+}
+
+#cvnavtitle #cvnavtitletxt #cntt1 {
+    color:black;
+}
+
+#cvnavtitle #cvnavtitletxt #cntt2 {
+    color:white;
+}
+
+.justifiedtxt {
+    text-align: justify;
+}
+
+.label-v {
+    margin-bottom: 2%;
+}
+
+.row-v {
+    margin-bottom: 7%;
+}
+
+/* '+' means -> 'ul li' is a tag placed beside the label and label + ul are nested within div */
+div.form-group div label[for=registration_form_username] + ul li,
+div.form-group div label[for=registration_form_plainPassword] + ul li, 
+div.form-group label[for=change_password_form_plainPassword_first] + ul li,
+div.form-group label[for=change_password_form_plainPassword_second] + ul li{
+    font-size: small;
+    color: red;
+}
+
+div.form-group div input#change_password_form_plainPassword_first {
+    margin-bottom: 5%;
+}
+
+/* & >  -> nested tags */
+div.form-group div.togglePasswContainer {
+    clear: both;
+    margin-top: 2%;
+    font-size: small;
+    width: 100%;
+    cursor: pointer;
+    & > a {
+        float: right;
+        text-decoration: none;
+    }
+}
+
+span#cvnavtitle {
+    cursor: pointer;
+}
+
+/* & >  -> nested spans */
+span#user_loggedin {
+    text-align: right;
+    margin-right: 1%;
+    font-size: small;
+    color: black;
+    & > span {
+        /* font-size: small; */
+        font-weight: bold;
+        color: green;
+    }
+}
+
+span.email_sent_icon {
+    display: none;
+    margin-left: 5%;
+}
