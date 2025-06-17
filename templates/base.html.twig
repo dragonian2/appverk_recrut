@@ -19,7 +19,7 @@
             <div class="container-fluid">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" name="menuLinks" href="#">Zadania</a>
+                        <button id="btasks" type="button" class="btn btn-primary btn-lg">Zadania</button>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -50,6 +50,7 @@
             $(document).ready(() => {
                 // -> simple routing (on click)
                 const routes = {
+                    "#btasks": '/',
                     "#bsignin": '/login',
                     "#blogout": '/logout'
                 }
