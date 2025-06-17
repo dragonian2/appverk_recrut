@@ -44,58 +44,8 @@
                 © 2025
             </div>
         </footer>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         {# {% block javascripts %} #}
-        <script>
-            $(document).ready(() => {
-                // -> simple routing (on click)
-                const routes = {
-                    "#btasks": '/',
-                    "#bsignin": '/login',
-                    "#blogout": '/logout'
-                }
-
-                Object.entries(routes).forEach(el => {
-                    $(el[0]).on('click', () => {
-                        window.location.href = el[1]
-                    })
-                });
-                // <-
-
-                // -> login form - show/hide password
-                $('span.togglePasswLink').on('click', () => {
-                    const passwFieldIds = [
-                        'login_password'
-                    ]
-                    let passwField = null
-                    passwFieldIds.forEach(el => {
-                        if ($(`#${el}`).hasOwnProperty('0')) {
-                            passwField = $(`#${el}`)
-                        }
-                    })
-
-                    let ftype = passwField.attr('type') === 'password' ? 'text' : 'password'
-
-                    if (ftype === 'password') {
-                        $('#show-hide-p').text('Pokaż')
-                        $('i#togglePassword').removeClass('bi-eye-slash').addClass('bi-eye')
-                    } else {
-                        $('#show-hide-p').text('Ukryj')
-                        $('i#togglePassword').removeClass('bi-eye').addClass('bi-eye-slash')
-                    }
-
-                    passwField.attr('type', ftype)
-                })
-                // <-
-
-                // -> clearing flash msgs onclick (login form)
-                $('button#login').on('click', () => {
-                    $('div.alert').css('display', 'none')
-                })
-
-                // <-
-            })
-        </script>
+        <script src="{{ asset('js/app.js') }}"></script>
         {# {% endblock %} #}
     </body>
 </html>
