@@ -51,14 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getId():  ?string
     {
-        // If the ID is not set, generate a new UUID v4
-        // This ensures that the ID is always set when the entity is created
-        if (!isset($this->id)) {
-            $this->id = Uuid::uuid4()->toString(); // Generates a random UUID v4
-        }
-        
         return $this->id;
     }
+    
     public function setId(string $id): static
     {
         $this->id = $id;

@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use Ramsey\Uuid\Uuid;
+use App\Enum\Status;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface as PasswHash;
@@ -19,7 +19,6 @@ class AppFixtures extends Fixture
     {
         $users = [
             [
-                'id' => Uuid::uuid4()->toString(),
                 'username' => 'user',
                 'roles' => ['ROLE_USER'],
                 'password' => 'haslo123',
@@ -28,7 +27,6 @@ class AppFixtures extends Fixture
                 'updatedAt' => null,
             ],
             [
-                'id' => Uuid::uuid4()->toString(),
                 'username' => 'admin',
                 'roles' => ['ROLE_USER', 'ROLE_ADMIN'],
                 'password' => 'haslo123',
@@ -40,7 +38,6 @@ class AppFixtures extends Fixture
 
         foreach ($users as $userData) {
             $user = new User();
-            $user->setId($userData['id']);
             $user->setUsername($userData['username']);
             $user->setRoles($userData['roles']);
             $user->setPassword($this->passwordHasher->hashPassword($user, $userData['password']));
@@ -49,6 +46,134 @@ class AppFixtures extends Fixture
             $user->setUpdatedAt($userData['updatedAt']);
 
             $manager->persist($user);
+        }
+
+        $tasks = [
+            [
+                'taskIdentity' => 'task-1',
+                'description' => 'Opis zadania 1',
+                'title' => 'Zadanie 1',
+                'deadline' => new \DateTime('2025-12-31'),
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+            [
+                'taskIdentity' => 'task-2',
+                'description' => 'Opis zadania 2',
+                'title' => 'Zadanie 2',
+                'deadline' => null,
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+            [
+                'taskIdentity' => 'task-3',
+                'description' => 'Odpocznij nieco.',
+                'title' => 'Odpoczynek',
+                'deadline' => null,
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+            [
+                'taskIdentity' => 'task-4',
+                'description' => 'Bierz sie ostro do roboty',
+                'title' => 'Wykonaj zadanie rekrutacyjne',
+                'deadline' => null,
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+        ];
+
+        $subTasks1 = [
+            [
+                'taskIdentity' => 'subtask-1',
+                'description' => 'Opis podzadania 1',
+                'title' => 'Podzadanie 1',
+                'deadline' => new \DateTime('2025-12-31'),
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+            [
+                'taskIdentity' => 'subtask-2',
+                'description' => 'Opis podzadania 2',
+                'title' => 'Podzadanie 2',
+                'deadline' => null,
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+        ];
+
+        $subTasks2 = [
+            [
+                'taskIdentity' => 'subtask-3',
+                'description' => 'Opis podzadania 3',
+                'title' => 'Podzadanie 3',
+                'deadline' => new \DateTime('2025-12-31'),
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+            [
+                'taskIdentity' => 'subtask-4',
+                'description' => 'Opis podzadania 4',
+                'title' => 'Podzadanie 4',
+                'deadline' => null,
+                'status' => Status::get('oczekujący'),
+                'createdAt' => new \DateTimeImmutable(),
+                'updatedAt' => null,
+            ],
+        ];
+
+        foreach ($tasks as $taskData) {
+            $task = new \App\Entity\Task();
+            $task->setTaskIdentity($taskData['taskIdentity']);
+            $task->setDescription($taskData['description']);
+            $task->setTitle($taskData['title']);
+            $task->setDeadline($taskData['deadline']);
+            $task->setStatus($taskData['status']);
+            $task->setCreatedAt($taskData['createdAt']);
+            $task->setUpdatedAt($taskData['updatedAt']);
+
+            if ($taskData['taskIdentity'] == 'task-1') {
+                foreach ($subTasks1 as $subTaskData) {
+                    $subTask = new \App\Entity\SubTask();
+                    $subTask->setTaskIdentity($subTaskData['taskIdentity']);
+                    $subTask->setDescription($subTaskData['description']);
+                    $subTask->setTitle($subTaskData['title']);
+                    $subTask->setDeadline($subTaskData['deadline']);
+                    $subTask->setStatus($subTaskData['status']);
+                    $subTask->setCreatedAt($subTaskData['createdAt']);
+                    $subTask->setUpdatedAt($subTaskData['updatedAt']);
+                    $subTask->setTask($task);
+
+                    $manager->persist($subTask);
+                    $task->addSubTask($subTask);
+                }
+            }
+
+            if ($taskData['taskIdentity'] == 'task-2') {
+                foreach ($subTasks2 as $subTaskData) {
+                    $subTask = new \App\Entity\SubTask();
+                    $subTask->setTaskIdentity($subTaskData['taskIdentity']);
+                    $subTask->setDescription($subTaskData['description']);
+                    $subTask->setTitle($subTaskData['title']);
+                    $subTask->setDeadline($subTaskData['deadline']);
+                    $subTask->setStatus($subTaskData['status']);
+                    $subTask->setCreatedAt($subTaskData['createdAt']);
+                    $subTask->setUpdatedAt($subTaskData['updatedAt']);
+                    $subTask->setTask($task);
+
+                    $manager->persist($subTask);
+                    $task->addSubTask($subTask);
+                }
+            }
+            
+            $manager->persist($task);
         }
 
         $manager->flush();
